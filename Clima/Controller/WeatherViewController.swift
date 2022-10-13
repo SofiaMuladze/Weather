@@ -76,11 +76,11 @@ extension WeatherViewController: WeatherManagerDelegate {
     
     func didUpdateWeather(_ weatherManger: WeatherManager,  weather: WeatherModel){
         DispatchQueue.main.async {
-            self.temperatureLabel.text = weather.tempString
+//            self.temperatureLabel.text = weather.tempString
             self.humidityLabel.text = weather.humidityString
             self.cloudsLabel.text = weather.cloudString
             self.conditionImageView.image = UIImage(named: weather.conditionName)
-            self.cityLabel.text = weather.locality
+            self.cityLabel.text = weather.cityName
             
         }
     }
@@ -89,15 +89,15 @@ extension WeatherViewController: WeatherManagerDelegate {
         print(error)
     }
     
-    func timeStampToDate(timeStamp: NSTimeInterval) -> NSDate {
-        return NSDate(timeIntervalSince1970: timeStamp)
-    }
-    
-    func formatDate(date: NSDate) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = NSDateFormatterStyle.FullStyle
-        return dateFormatter.string(from: date as Date)
-    }
+//    func timeStampToDate(timeStamp: NSTimeInterval) -> NSDate {
+//        return NSDate(timeIntervalSince1970: timeStamp)
+//    }
+//    
+//    func formatDate(date: NSDate) -> String {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateStyle = NSDateFormatterStyle.FullStyle
+//        return dateFormatter.string(from: date as Date)
+//    }
 }
 
 //MARK: - CLLocationManagerDelegate

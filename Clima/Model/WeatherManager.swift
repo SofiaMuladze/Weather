@@ -14,7 +14,8 @@ protocol WeatherManagerDelegate{
 }
 
 struct WeatherManager {
-    let weatherURL = "https://api.openweathermap.org/data/2.5/onecall?appid=fc644d98bc664f44caccb04248a6fc2f&units=metric"
+    let weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=fc644d98bc664f44caccb04248a6fc2f&units=metric"
+
     //    var hourly1 = 1618315200
     //    var daily1 = 1618308000
     var delegate: WeatherManagerDelegate?
@@ -95,28 +96,17 @@ struct WeatherManager {
      */
     //MARK: - ____________
     
-    func parseJSON(_ weatherData: Data)->WeatherModel? {
+    func parseJSON(_ weatherData: Data) -> WeatherModel? {
         let decoder = JSONDecoder()
         do {
             let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
+            let id = decodedData.weather[0].id
+            let temp = decodedData.main.temp
+            let name = decodedData.name
+            let humidity = decodedData.main.humidity
+            let clouds = decodedData.clouds.all
             
-            let name = "Milano"
-            let temp = String(decodedData.current.temp)
-            let id = decodedData.current.weather[0].id
-            let humidity = decodedData.current.humidity
-            let clouds = decodedData.current.clouds
-            
-            let hourlyDt = String(decodedData.hourly[0].dt)
-            let hourlyTemp = String(decodedData.hourly[1].temp)
-            let hourlyId = decodedData.hourly[2].weather[0].id
-        
-            let dailyDt = String(decodedData.daily[0].dt)
-            let dailyMin = String(decodedData.daily[1].temp.min)
-            let dailyMax = String(decodedData.daily[1].temp.max)
-            let dailyId = decodedData.daily[2].weather[0].id
-            
-            let weather = WeatherModel(locality: name, temp: temp, conditionId: id, humidity: humidity, clouds: clouds, hourlyWeather: [WeatherModel.Hourly(dt: hourlyDt, temp: hourlyTemp, conditionId: hourlyId)], dailyWeather: [WeatherModel.Daily(dt: dailyDt, minTemp: dailyMin, maxTemp: dailyMax, conditionId: dailyId)])
-            
+            let weather = WeatherModel(conditionId: id, cityName: name, temperature: temp, humidity: humidity, clouds: clouds)
             return weather
             
         } catch {
